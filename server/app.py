@@ -40,7 +40,7 @@ def get_restaurant_by_id(id):
 def delete_restaurant(id):
     restaurant = Restaurant.query.get(id)
     if restaurant:
-        # First delete associated restaurant_pizzas
+        # Delete associated RestaurantPizzas first
         RestaurantPizza.query.filter_by(restaurant_id=id).delete()
         db.session.delete(restaurant)
         db.session.commit()

@@ -20,7 +20,7 @@ class Restaurant(db.Model, SerializerMixin):
     address = db.Column(db.String)
 
     # Relationship with Pizza through RestaurantPizza
-    pizzas = relationship("Pizza", secondary="restaurant_pizzas", back_populates="restaurants", cascade="all, delete-orphan")
+    pizzas = relationship("Pizza", secondary="restaurant_pizzas", back_populates="restaurants", cascade="all, delete")
 
     # Serialization rules to limit recursion depth
     serialize_rules = ("-pizzas",)
@@ -74,12 +74,12 @@ class RestaurantPizza(db.Model, SerializerMixin):
 
     # Relationships
     restaurant = relationship("Restaurant", back_populates="pizzas")
-    pizza = relationship("Pizza", back_populates="restaurants", single_parent=True)  # Ensuring single reference for delete-orphan
+    pizza = relationship("Pizza", back_populates="restaurants", single_parent=True) 
 
     # Serialization rules to limit recursion depth
     serialize_rules = ("-restaurant", "-pizza")
 
-    # Add validation if needed (for example, price validation)
+    # Adding validation 
     @validates('price')
     def validate_price(self, key, price):
         if price < 1 or price > 30:
